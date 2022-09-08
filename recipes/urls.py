@@ -1,10 +1,12 @@
 from django.urls import path
 
-from recipes.views import home
+from . import views
+
+# esse . (Ponto), mostra que a pasta views está na mesma pasta
+# de recipes, ou seja, da pasta em que estou, import views
 
 # dominio/recipes/
 urlpatterns = [
-    # path('sobre/', sobre),
-    # path('contato/', contato),
-    path('', home)  # as aspas vazias representam a raiz do site
+    path('', views.home),
+    path('recipes/<int:id>/', views.recipe),
 ]
