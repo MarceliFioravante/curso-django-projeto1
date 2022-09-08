@@ -13,6 +13,6 @@ def home(request):
 
 def recipe(request, id):
     # return HttpResponse('HOME')
-    return render(request, 'recipes/pages/home.html', context={
+    return render(request, 'recipes/pages/recipe-view.html', context={
         'name': 'Marceli',
     })
