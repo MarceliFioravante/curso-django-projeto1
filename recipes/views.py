@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from utils.recipes.factory import make_recipe
 
 # o render le um arquivo e renderiza o mesmo.
 # O django procura arquivos HTML dentro de uma pasta de nome template
@@ -7,12 +8,12 @@ from django.shortcuts import render
 def home(request):
     # return HttpResponse('HOME')
     return render(request, 'recipes/pages/home.html', context={
-        'name': 'Marceli',
+        'recipes': [make_recipe() for _ in range(10)],
     })
 
 
 def recipe(request, id):
     # return HttpResponse('HOME')
     return render(request, 'recipes/pages/recipe-view.html', context={
-        'name': 'Marceli',
+        'recipe': make_recipe(),
     })
