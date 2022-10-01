@@ -1,10 +1,8 @@
-from django.shortcuts import get_list_or_404, get_object_or_404, render
+
+from django.shortcuts import get_list_or_404, render
 from utils.recipes.factory import make_recipe
 
 from recipes.models import Recipe
-
-# o render le um arquivo e renderiza o mesmo.
-# O django procura arquivos HTML dentro de uma pasta de nome template
 
 
 def home(request):
@@ -26,12 +24,17 @@ def category(request, category_id):
 
     return render(request, 'recipes/pages/category.html', context={
         'recipes': recipes,
-        'title': f'{recipes[0].category.name} - Category |',
+        'title': f'{recipes[0].category.name} - Category | '
     })
 
 
 def recipe(request, id):
+    recipe = Recipe.objects.filter(
+        pk=id,
+        is_published=True,
+    ).order_by('-id').first()
+
     return render(request, 'recipes/pages/recipe-view.html', context={
-        'recipe': make_recipe(),
+        'recipe': recipe,
         'is_detail_page': True,
     })
