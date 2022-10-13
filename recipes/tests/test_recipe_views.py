@@ -47,7 +47,14 @@ class RecipeViewsTest(TestCase):
             preparation_steps_is_html=False,
             is_published=True,
         )
-        assert 1 == 1
+        response = self.client.get(reverse('recipes:home'))
+       # response_recipes = response.context['recipes']
+        content = response.content.decode('utf-8')
+        response_context_recipes = response.context['recipes']
+        self.assertIn('Title', content)
+        self.assertEqual(len(response_context_recipes), 1)
+
+       # self.assertEqual(response.recipes.first().title, 'Title')
 
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category',
