@@ -1,7 +1,7 @@
 from django.urls import resolve, reverse
 from recipes import views
 
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import Recipe, RecipeTestBase
 
 
 class RecipeViewsTest(RecipeTestBase):
@@ -25,6 +25,7 @@ class RecipeViewsTest(RecipeTestBase):
         )
 
     def test_recipe_home_template_loads_recipes(self):
+        self.make_recipe()
         response = self.client.get(reverse('recipes:home'))
        # response_recipes = response.context['recipes']
         content = response.content.decode('utf-8')
