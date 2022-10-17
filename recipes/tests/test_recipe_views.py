@@ -1,7 +1,9 @@
+from unittest import skip
+
 from django.urls import resolve, reverse
 from recipes import views
 
-from .test_recipe_base import Recipe, RecipeTestBase
+from .test_recipe_base import RecipeTestBase
 
 
 class RecipeViewsTest(RecipeTestBase):
@@ -17,6 +19,7 @@ class RecipeViewsTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:home'))
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
 
+    # @skip('WIP - WORK IN PROGRESS')
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipes(self):
         response = self.client.get(reverse('recipes:home'))
         self.assertIn(
@@ -37,7 +40,7 @@ class RecipeViewsTest(RecipeTestBase):
 
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category',
-                       kwargs={'category_id': 1000}))
+                               kwargs={'category_id': 1000}))
         self.assertIs(view.func, views.category)
 
     def test_recipe_category_view_returns_404_if_no_recipes_found(self):
