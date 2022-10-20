@@ -1,4 +1,4 @@
-from unittest import skip
+# from unittest import skip
 
 from django.urls import resolve, reverse
 from recipes import views
@@ -30,13 +30,24 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipe_home_template_loads_recipes(self):
         self.make_recipe()
         response = self.client.get(reverse('recipes:home'))
-       # response_recipes = response.context['recipes']
+        # response_recipes = response.context['recipes']
         content = response.content.decode('utf-8')
         response_context_recipes = response.context['recipes']
         self.assertIn('Title', content)
         self.assertEqual(len(response_context_recipes), 1)
 
-       # self.assertEqual(response.recipes.first().title, 'Title')
+    def test_recipe_home_template_dont_load_recipes_not_published(self):
+        """Test recipe Is_published False dont show"""
+        # Need a recipe for this test
+        self.make_recipe(is_published=False)
+
+        response = self.client.get(reverse('recipes:home'))
+
+        # check if one recipe exists
+        self.assertIn(
+            'No recipes found',
+            response.content.decode('utf-8')
+        )
 
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category',
@@ -53,7 +64,7 @@ class RecipeViewsTest(RecipeTestBase):
         # Need a recipe for this test
         self.make_recipe(title=needed_title)
         response = self.client.get(reverse('recipes:category', args=(1,)))
-       # response_recipes = response.context['recipes']
+        # response_recipes = response.context['recipes']
         content = response.content.decode('utf-8')
 
         # Check if one recipe exists
@@ -74,7 +85,7 @@ class RecipeViewsTest(RecipeTestBase):
         self.make_recipe(title=needed_title)
         response = self.client.get(
             reverse('recipes:recipe', kwargs={'id': 1}))
-       # response_recipes = response.context['recipes']
+        # response_recipes = response.context['recipes']
         content = response.content.decode('utf-8')
         # Check if one recipe exists
         self.assertIn(needed_title, content)
