@@ -48,8 +48,11 @@ def search(request):
         raise Http404()
 
     recipes = Recipe.objects.filter(
-        Q(title__icontains=search_term) |
-        Q(description__icontains=search_term),
+        Q(
+            Q(title__icontains=search_term) |
+            Q(description__icontains=search_term),
+        ),
+        is_published=True
         # icontains = identifica que a busca deve ser feita pelo termo pesquisado mas considera
         # maiusculas e minusculas e trechos dentro dos titulos.
     ).order_by('-id')
