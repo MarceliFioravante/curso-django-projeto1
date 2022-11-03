@@ -1,4 +1,6 @@
 
+from django.db.models import \
+    Q  # indica para o Django que qeuro OR ao inves de apenas AND
 from django.http.response import Http404
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
@@ -45,6 +47,15 @@ def search(request):
     if not search_term:
         raise Http404()
 
+    recipes = Recipe.objects.filter(
+        Q(title__icontains=search_term) |
+        Q(description__icontains=search_term),
+        # icontains = identifica que a busca deve ser feita pelo termo pesquisado mas considera
+        # maiusculas e minusculas e trechos dentro dos titulos.
+    ).order_by('-id')
+
     return render(request, 'recipes/pages/search.html', {
         'page_title': f'Search for "{search_term}" | ',
+        'search_term': search_term,
+        'recipes': recipes,
     })
