@@ -1,6 +1,5 @@
 # from unittest import skip
 
-from urllib import response
 
 from django.urls import resolve, reverse
 from recipes import views
